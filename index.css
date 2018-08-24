@@ -1,0 +1,21 @@
+ul.projects-list {
+  list-style: none;
+}
+ul.projects-list li {
+  display: inline;
+  padding: 10px;
+}
+ul.projects-list span {
+  cursor: pointer;
+}
+
+table td {
+  border: 1px solid #999;
+  width: 80px;
+  height: 40px;
+  margin: 10px;
+}
+
+td.selected {
+  background-color: green !important;
+}
