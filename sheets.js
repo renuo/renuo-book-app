@@ -63,10 +63,15 @@ function handleSaveClick(event) {
 }
 
 function appendDatesRow(dates) {
-  const tr = $('<tr><th></th></tr>');
+  const tr = $('<tr class="header-row"><th class="header-col"></th></tr>');
+  let dayCount = 0;
   dates.forEach(date => {
-    //const isoDateString = date.toISOString().slice(0, 10);
-    tr.append($(`<th>${date}</th>`))
+    const th = $('<th/>');
+    const parts = date.split('-');
+    th.append(`<div class="year-${parts[0]}">${parts[0]}</div>`);
+    th.append(`<div class="month-${parts[1]}">${parts[1]}</div>`);
+    th.append(`<div class="day-${parts[2]} day-group-${Math.floor(dayCount++ / 5) % 4}">${parts[2]}</div>`);
+    tr.append(th);
   });
   assignmentsTable.append(tr);
 }
@@ -75,14 +80,11 @@ function appendAssignmentRow(worker) {
   const tr = $('<tr/>');
 
   tr.data('worker', worker.name);
-  tr.append(`<th>${worker.name}</th>`);
+  tr.append(`<th class="header-col">${worker.name}</th>`);
 
   worker.assignments.forEach((assignment, index) => {
     const project = projects.find(p => p.name === assignment);
     const td = $('<td/>');
-
-    console.log(assignment)
-    console.log(projects)
 
     if (project) {
       td.data('day', index) // TODO: shouldnt be index based probably

@@ -9,13 +9,38 @@ ul.projects-list span {
   cursor: pointer;
 }
 
-table td {
-  border: 1px solid #999;
-  width: 80px;
-  height: 40px;
-  margin: 10px;
+.table-scroll-container {
+  width: calc(100% - 5em);
+  overflow-x: scroll;
+  margin-left: 5em;
+  overflow-y: visible;
+  padding: 0;
 }
 
-td.selected {
+table.assignments-table {
+  border-collapse: collapse;
+}
+
+table.assignments-table .header-row th {
+  padding: 0;
+}
+table.assignments-table .header-row th div {
+  padding: 2px;
+}
+
+table.assignments-table tr th.header-col {
+  position: absolute;
+  width: 5em;
+  left: 0;
+  top: auto;
+}
+
+table.assignments-table td {
+  width: 80px;
+  height: 25px;
+  background-clip: border-box;
+  border: 1px solid white;
+}
+table.assignments-table td.selected {
   background-color: green !important;
 }
