@@ -2,9 +2,11 @@ const CLIENT_ID = '502689268389-ahijjl56r21aueu32r30thdl78lf8euq.apps.googleuser
 const API_KEY = 'AIzaSyCWihXc4ivZp8NGVZ6XFcJgIk1Euq2XLLA';
 const DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
 const SCOPES = "https://www.googleapis.com/auth/spreadsheets";
+const SPREADSHEET_ID = '1VkzZSIgj9ksiNUHn_vWLGxYwAtVQkSzlTHH3ma9vtww';
 
 const authorizeButton = document.getElementById('authorize_button');
 const signoutButton = document.getElementById('signout_button');
+const saveButton = document.getElementById('save_button');
 
 const projectsList = $('#projects');
 const assignmentsTable = $('#table');
@@ -12,17 +14,10 @@ const assignmentsTable = $('#table');
 let projects = [];
 let workers = [];
 
-/**
- *  On load, called to load the auth2 library and API client library.
- */
 function handleClientLoad() {
   gapi.load('client:auth2', initClient);
 }
 
-/**
- *  Initializes the API client library and sets up sign-in state
- *  listeners.
- */
 function initClient() {
   gapi.client.init({
     apiKey: API_KEY,
@@ -37,36 +32,34 @@ function initClient() {
     updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
     authorizeButton.onclick = handleAuthClick;
     signoutButton.onclick = handleSignoutClick;
+    saveButton.onclick = handleSaveClick;
   });
 }
 
-/**
- *  Called when the signed in status changes, to update the UI
- *  appropriately. After a sign-in, the API is called.
- */
 function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
     authorizeButton.style.display = 'none';
     signoutButton.style.display = 'block';
+    saveButton.style.display = 'block';
+
     loadProjects().then(loadWorkers);
   } else {
     authorizeButton.style.display = 'block';
     signoutButton.style.display = 'none';
+    saveButton.style.display = 'none';
   }
 }
 
-/**
- *  Sign in the user upon button click.
- */
 function handleAuthClick(event) {
   gapi.auth2.getAuthInstance().signIn();
 }
 
-/**
- *  Sign out the user upon button click.
- */
 function handleSignoutClick(event) {
   gapi.auth2.getAuthInstance().signOut();
+}
+
+function handleSaveClick(event) {
+  saveAllAssignments();
 }
 
 function appendDatesRow(dates) {
@@ -88,10 +81,13 @@ function appendAssignmentRow(worker) {
     const project = projects.find(p => p.name === assignment);
     const td = $('<td/>');
 
+    console.log(assignment)
+    console.log(projects)
+
     if (project) {
-      td.data('day', index); // TODO: shouldnt be index based probably
-      td.data('project', project);
-      td.css('background-color', project.color);
+      td.data('day', index) // TODO: shouldnt be index based probably
+        .data('project', project)
+        .css('background-color', project.color);
     }
 
     tr.append(td);
@@ -103,17 +99,18 @@ function appendAssignmentRow(worker) {
 function appendProject(project) {
   const projectEl = $(`<li><span style="color: ${project.color};">█</span> ${project.name}</li>`);
   projectEl.data('project', project.name);
-  projectEl.click(e => { $('td.selected').css('background-color', project.color) });
+  projectEl.click(e => {
+    const cells = $('td.selected')
+      .data('project', project)
+      .css('background-color', project.color)
+      .removeClass("selected");
+  });
   projectsList.append(projectEl);
 }
 
-/**
- * Print the names and majors of students in a sample spreadsheet:
- * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
- */
 function loadProjects() {
   return gapi.client.sheets.spreadsheets.values.get({
-    spreadsheetId: '1VkzZSIgj9ksiNUHn_vWLGxYwAtVQkSzlTHH3ma9vtww',
+    spreadsheetId: SPREADSHEET_ID,
     majorDimension: 'ROWS',
     range: 'Projects!A:B'
   }).then(function(response) {
@@ -127,9 +124,9 @@ function loadProjects() {
 
 function loadWorkers() {
   return gapi.client.sheets.spreadsheets.values.get({
-    spreadsheetId: '1VkzZSIgj9ksiNUHn_vWLGxYwAtVQkSzlTHH3ma9vtww',
+    spreadsheetId: SPREADSHEET_ID,
     majorDimension: 'COLUMNS',
-    range: 'Assignments!A:I'
+    range: 'Assignments!A:J'
   }).then(function(response) {
     const datesColumn = response.result.values[0];
     appendDatesRow(datesColumn.slice(1));
@@ -142,6 +139,30 @@ function loadWorkers() {
     workers.forEach(w => appendAssignmentRow(w));
 
     initializeSelector($('#table'));
+  }, function(response) {
+    console.log('Error: ' + response.result.error.message);
+  });
+}
+
+function saveAllAssignments() {
+  const values = assignmentsTable.children('tr').slice(1).map((i, rowEl) => {
+    return [$(rowEl).children('td').map((j, cellEl) => {
+      const project = $(cellEl).data('project');
+      if (project) {
+        return project.name
+      } else {
+        return undefined;
+      }
+    }).get()];
+  }).get();
+
+  return gapi.client.sheets.spreadsheets.values.update({
+    spreadsheetId: SPREADSHEET_ID,
+    range: 'Assignments!B2:J',
+    valueInputOption: 'RAW',
+    resource: { values: values, majorDimension: 'COLUMNS' }
+  }).then((response) => {
+    console.log(`${response.result.updatedCells} cells updated.`);
   }, function(response) {
     console.log('Error: ' + response.result.error.message);
   });
