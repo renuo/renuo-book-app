@@ -4,12 +4,12 @@
   <meta charset="utf-8">
   <title>Renuo Book App</title>
   <link href="index.css" rel="stylesheet">
+
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="index.js"></script>
   <script>
     $(function() {
       const projects = [
-        { name: 'Renuo', color: '#CCF' },
         { name: 'Accarda', color: '#ffc96f' },
         { name: 'localsearch', color: '#bcffcf' },
         { name: 'Kingschair', color: '#F55' },
@@ -86,6 +86,12 @@
 </head>
 
 <body>
+
+  <div style="float: right;">
+    <button id="authorize_button" style="display: none;">Authorize</button>
+    <button id="signout_button" style="display: none;">Sign Out</button>
+  </div>
+
   <h1>Renuo Book App</h1>
 
   <h2>Projects</h2>
@@ -93,5 +99,11 @@
 
   <h2>Bookings</h2>
   <table id="table"/>
+
+  <script src="sheets.js"></script>
+  <script async defer src="https://apis.google.com/js/api.js"
+          onload="this.onload=function(){};handleClientLoad()"
+          onreadystatechange="if (this.readyState === 'complete') this.onload()">
+  </script>
 </body>
 </html>
