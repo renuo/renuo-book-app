@@ -7,89 +7,13 @@
 
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="index.js"></script>
-  <script>
-    $(function() {
-      const projects = [
-        { name: 'Accarda', color: '#ffc96f' },
-        { name: 'localsearch', color: '#bcffcf' },
-        { name: 'Kingschair', color: '#F55' },
-        { name: 'Bankentracker', color: '#FAB' },
-        { name: 'Holidays', color: '#c29cff' },
-        { name: 'VIU', color: '#ffeb8a' }
-      ];
-
-      const startDate = new Date('2018-01-01');
-      const endDate = new Date('2018-01-08');
-      const workDays = datesBetweenDates(startDate, endDate)
-        .filter(d => d.getDay() % 6 !== 0); // only weekdays
-
-      const workerAssignments = [
-        {
-          name: 'Josua',
-          assignments: [undefined, 'localsearch', 'localsearch', 'localsearch', undefined]
-        }, {
-          name: 'Ale',
-          assignments: ['Holidays', 'Accarda', 'Accarda', 'Accarda', undefined]
-        }, {
-          name: 'Samuel',
-          assignments: ['Renuo', 'Renuo', 'Renuo', 'Renuo', 'Renuo']
-        }, {
-          name: 'Simon',
-          assignments: [undefined, 'localsearch', 'localsearch', 'localsearch', 'VIU']
-        }, {
-          name: 'Amina',
-          assignments: [undefined, undefined, undefined, undefined, undefined]
-        }
-      ];
-
-      const table = $('#table');
-
-      projects.forEach(p => {
-        const projectEl = $(`<li><span style="color: ${p.color};">█</span> ${p.name}</li>`);
-        projectEl.data('project', p.name);
-        projectEl.click(e => { $('td.selected').css('background-color', p.color) });
-        $('#projects').append(projectEl);
-      });
-
-      const tr = $('<tr><th></th></tr>');
-      workDays.forEach(date => {
-        const isoDateString = date.toISOString().slice(0, 10);
-        tr.append($(`<th>${isoDateString}</th>`))
-      });
-      table.append(tr);
-
-      workerAssignments.forEach(worker => {
-        const tr = $('<tr/>');
-
-        tr.data('worker', worker.name);
-        tr.append(`<th>${worker.name}</th>`);
-
-        worker.assignments.forEach((assignment, index) => {
-          const project = projects.find(p => p.name === assignment);
-          const td = $('<td/>');
-
-          if(project) {
-            td.data('day', index); // TODO: shouldnt be index based probably
-            td.data('project', project);
-            td.css('background-color', project.color);
-          }
-
-          tr.append(td);
-        });
-
-        table.append(tr);
-      });
-
-      initializeSelector(table);
-    })
-  </script>
 </head>
 
 <body>
-
   <div style="float: right;">
     <button id="authorize_button" style="display: none;">Authorize</button>
     <button id="signout_button" style="display: none;">Sign Out</button>
+    <p><a href="https://docs.google.com/spreadsheets/d/1VkzZSIgj9ksiNUHn_vWLGxYwAtVQkSzlTHH3ma9vtww/edit#gid=0">Data source</a></p>
   </div>
 
   <h1>Renuo Book App</h1>
@@ -98,12 +22,11 @@
   <ul id="projects" class="projects-list"></ul>
 
   <h2>Bookings</h2>
-  <table id="table"/>
+  <table id="table"></table>
 
   <script src="sheets.js"></script>
   <script async defer src="https://apis.google.com/js/api.js"
           onload="this.onload=function(){};handleClientLoad()"
-          onreadystatechange="if (this.readyState === 'complete') this.onload()">
-  </script>
+          onreadystatechange="if (this.readyState === 'complete') this.onload()"></script>
 </body>
 </html>

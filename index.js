@@ -66,9 +66,3 @@ function initializeSelector(table) {
     isMouseDown = false;
   });
 }
-
-function datesBetweenDates(startDate, endDate) {
-  return Array(Math.floor((endDate - startDate) / 86400000) + 1).fill().map((_, idx) => {
-    return new Date(startDate.getTime() + idx * 86400000)
-  });
-}
