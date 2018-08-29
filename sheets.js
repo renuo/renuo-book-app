@@ -48,8 +48,7 @@ function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
     authorizeButton.style.display = 'none';
     signoutButton.style.display = 'block';
-    loadProjects();
-    loadWorkers();
+    loadProjects().then(loadWorkers);
   } else {
     authorizeButton.style.display = 'block';
     signoutButton.style.display = 'none';
@@ -113,7 +112,7 @@ function appendProject(project) {
  * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
  */
 function loadProjects() {
-  gapi.client.sheets.spreadsheets.values.get({
+  return gapi.client.sheets.spreadsheets.values.get({
     spreadsheetId: '1VkzZSIgj9ksiNUHn_vWLGxYwAtVQkSzlTHH3ma9vtww',
     majorDimension: 'ROWS',
     range: 'Projects!A:B'
@@ -127,7 +126,7 @@ function loadProjects() {
 }
 
 function loadWorkers() {
-  gapi.client.sheets.spreadsheets.values.get({
+  return gapi.client.sheets.spreadsheets.values.get({
     spreadsheetId: '1VkzZSIgj9ksiNUHn_vWLGxYwAtVQkSzlTHH3ma9vtww',
     majorDimension: 'COLUMNS',
     range: 'Assignments!A:I'
@@ -136,7 +135,10 @@ function loadWorkers() {
     appendDatesRow(datesColumn.slice(1));
 
     const assignmentColumns = response.result.values.slice(1);
-    workers = assignmentColumns.map(col => ({name: col[0], assignments: col.slice(1)}));
+    workers = assignmentColumns.map(col => {
+      const zeroPadding = (new Array(datesColumn.length - col.length)).fill(undefined);
+      return {name: col[0], assignments: col.concat(zeroPadding).slice(1)}
+    });
     workers.forEach(w => appendAssignmentRow(w));
 
     initializeSelector($('#table'));
