@@ -3,11 +3,14 @@
 <head>
   <meta charset="utf-8">
   <title>Renuo Book App</title>
-  <link href="dates.css?v=2018-08-29" rel="stylesheet">
+
   <link href="index.css?v=2018-08-30" rel="stylesheet">
+  <link href="dates.css?v=2018-08-29" rel="stylesheet">
+  <link href="projects.css?v=2018-08-30" rel="stylesheet">
+  <link href="assignments.css?v=2018-08-30" rel="stylesheet">
 
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-  <script src="index.js?v=2018-08-29"></script>
+  <script src="selector.js?v=2018-08-30"></script>
 </head>
 
 <body>
@@ -20,13 +23,15 @@
 
   <h1>Renuo Book App</h1>
 
-  <h2>Projects</h2>
-  <ul id="projects" class="projects-list"></ul>
+  <section>
+    <ul id="projects-list" class="projects-list"></ul>
+  </section>
 
-  <h2>Bookings</h2>
-  <div class="table-scroll-container">
-    <table id="table" class="assignments-table"></table>
-  </div>
+  <section>
+    <div class="table-scroll-container">
+      <table id="assignments-table" class="assignments-table"></table>
+    </div>
+  </section>
 
   <script src="sheets.js"></script>
   <script async defer src="https://apis.google.com/js/api.js"

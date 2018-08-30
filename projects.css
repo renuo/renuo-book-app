@@ -1,0 +1,14 @@
+ul.projects-list {
+  list-style: none;
+}
+ul.projects-list li {
+  display: inline;
+  padding: 10px;
+  cursor: pointer;
+}
+ul.projects-list .color-button {
+  border: 1px solid #f0f0f0;
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+}

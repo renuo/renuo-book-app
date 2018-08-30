@@ -8,8 +8,8 @@ const authorizeButton = document.getElementById('authorize_button');
 const signoutButton = document.getElementById('signout_button');
 const saveButton = document.getElementById('save_button');
 
-const projectsList = $('#projects');
-const assignmentsTable = $('#table');
+const projectsList = $('#projects-list');
+const assignmentsTable = $('#assignments-table');
 
 let projects = [];
 let workers = [];
@@ -84,7 +84,7 @@ function appendAssignmentRow(worker) {
 
   worker.assignments.forEach((assignment, index) => {
     const project = projects.find(p => p.name === assignment);
-    const td = $('<td/>');
+    const td = $(`<td class="${index % 5 === 4 ? 'group-end-cell' : '' }"/>`);
 
     if (project) {
       td.data('day', index) // TODO: shouldnt be index based probably
@@ -140,7 +140,7 @@ function loadWorkers() {
     });
     workers.forEach(w => appendAssignmentRow(w));
 
-    initializeSelector($('#table'));
+    initializeSelector(assignmentsTable);
   }, function(response) {
     console.log('Error: ' + response.result.error.message);
   });

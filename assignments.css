@@ -1,0 +1,58 @@
+.table-scroll-container {
+  width: calc(100% - 5em);
+  overflow-x: scroll;
+  margin-left: 5em;
+  overflow-y: visible;
+  padding: 0;
+}
+
+table.assignments-table {
+  border-collapse: collapse;
+}
+table.assignments-table th {
+  font-weight: normal;
+}
+table.assignments-table .header-row th {
+  padding: 0;
+  font-size: 90%;
+}
+table.assignments-table .header-row th div {
+  padding: 3px;
+}
+table.assignments-table .header-row th div:first-of-type {
+  font-size: 80%;
+}
+
+table.assignments-table tr th.header-col {
+  position: absolute;
+  width: 5.5em;
+  left: 0;
+  top: auto;
+
+  padding: 5px;
+  font-size: 90%;
+  text-align: right;
+}
+
+table.assignments-table td {
+  width: 80px;
+  height: 25px;
+  background-clip: border-box;
+  border: 1px solid #f0f0f0;
+}
+table.assignments-table td:first-of-type {
+  border-left: 1px solid silver;
+}
+table.assignments-table tr:first-of-type th:not(:first-of-type) {
+  border-bottom: 1px solid silver;
+}
+table.assignments-table tr:last-of-type td {
+  border-bottom: 1px solid silver;
+}
+
+table.assignments-table td.group-end-cell {
+  border-right: 1px solid silver;
+}
+table.assignments-table td.selected {
+  background-color: green !important;
+}
