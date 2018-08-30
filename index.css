@@ -4,9 +4,13 @@ ul.projects-list {
 ul.projects-list li {
   display: inline;
   padding: 10px;
-}
-ul.projects-list span {
   cursor: pointer;
+}
+ul.projects-list .color-button {
+  border: 1px solid #f0f0f0;
+  width: 10px;
+  height: 10px;
+  display: inline-block;
 }
 
 .table-scroll-container {
@@ -39,7 +43,7 @@ table.assignments-table td {
   width: 80px;
   height: 25px;
   background-clip: border-box;
-  border: 1px solid white;
+  border: 1px solid #f0f0f0;
 }
 table.assignments-table td.selected {
   background-color: green !important;

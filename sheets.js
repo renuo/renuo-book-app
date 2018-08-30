@@ -99,7 +99,7 @@ function appendAssignmentRow(worker) {
 }
 
 function appendProject(project) {
-  const projectEl = $(`<li><span style="color: ${project.color};">█</span> ${project.name}</li>`);
+  const projectEl = $(`<li><div class="color-button" style="background-color: ${project.color};"></div> ${project.name}</li>`);
   projectEl.data('project', project.name);
   projectEl.click(e => {
     const cells = $('td.selected')
