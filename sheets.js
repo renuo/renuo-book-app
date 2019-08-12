@@ -128,7 +128,7 @@ function loadWorkers() {
   return gapi.client.sheets.spreadsheets.values.get({
     spreadsheetId: SPREADSHEET_ID,
     majorDimension: 'COLUMNS',
-    range: 'Assignments!A:J'
+    range: 'Assignments!A:K'
   }).then(function(response) {
     const datesColumn = response.result.values[0];
     appendDatesRow(datesColumn.slice(1));
