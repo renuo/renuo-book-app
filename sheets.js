@@ -160,7 +160,7 @@ function saveAllAssignments() {
 
   return gapi.client.sheets.spreadsheets.values.update({
     spreadsheetId: SPREADSHEET_ID,
-    range: 'Assignments!B2:J',
+    range: 'Assignments!B2:K',
     valueInputOption: 'RAW',
     resource: { values: values, majorDimension: 'COLUMNS' }
   }).then((response) => {
